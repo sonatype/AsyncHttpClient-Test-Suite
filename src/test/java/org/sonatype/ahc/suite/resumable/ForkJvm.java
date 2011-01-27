@@ -1,17 +1,17 @@
 package org.sonatype.ahc.suite.resumable;
 
 /*
-* Copyright (c) 2010 Sonatype, Inc. All rights reserved.
-*
-* This program is licensed to you under the Apache License Version 2.0, 
-* and you may not use this file except in compliance with the Apache License Version 2.0. 
-* You may obtain a copy of the Apache License Version 2.0 at http://www.apache.org/licenses/LICENSE-2.0.
-*
-* Unless required by applicable law or agreed to in writing, 
-* software distributed under the Apache License Version 2.0 is distributed on an 
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-* See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
-*/
+ * Copyright (c) 2010-2011 Sonatype, Inc. All rights reserved.
+ *
+ * This program is licensed to you under the Apache License Version 2.0, 
+ * and you may not use this file except in compliance with the Apache License Version 2.0. 
+ * You may obtain a copy of the Apache License Version 2.0 at http://www.apache.org/licenses/LICENSE-2.0.
+ *
+ * Unless required by applicable law or agreed to in writing, 
+ * software distributed under the Apache License Version 2.0 is distributed on an 
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
+ */
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -40,14 +40,20 @@ public class ForkJvm {
 
     private int port = -1;
 
+    private String syncPath;
+
+    private int killAfter = -1;
+
     public void addParameter(String parameter) {
         parameters.add(parameter);
     }
 
     /**
-     * Adds the source JAR of the specified class/interface to the class path of the forked JVM.
-     *
-     * @param type The class/interface to add, may be <code>null</code>.
+     * Adds the source JAR of the specified class/interface to the class path of
+     * the forked JVM.
+     * 
+     * @param type
+     *            The class/interface to add, may be <code>null</code>.
      */
     public void addClassPathEntry(Class<?> type) {
         addClassPathEntry(getClassSource(type));
@@ -55,8 +61,9 @@ public class ForkJvm {
 
     /**
      * Adds the specified path to the class path of the forked JVM.
-     *
-     * @param path The path to add, may be <code>null</code>.
+     * 
+     * @param path
+     *            The path to add, may be <code>null</code>.
      */
     public void addClassPathEntry(String path) {
         if (path != null) {
@@ -66,8 +73,9 @@ public class ForkJvm {
 
     /**
      * Adds the specified path to the class path of the forked JVM.
-     *
-     * @param path The path to add, may be <code>null</code>.
+     * 
+     * @param path
+     *            The path to add, may be <code>null</code>.
      */
     public void addClassPathEntry(File path) {
         if (path != null) {
@@ -77,9 +85,11 @@ public class ForkJvm {
 
     /**
      * Gets the JAR file or directory that contains the specified class.
-     *
-     * @param type The class/interface to find, may be <code>null</code>.
-     * @return The absolute path to the class source location or <code>null</code> if unknown.
+     * 
+     * @param type
+     *            The class/interface to find, may be <code>null</code>.
+     * @return The absolute path to the class source location or
+     *         <code>null</code> if unknown.
      */
     private static File getClassSource(Class<?> type) {
         if (type != null) {
@@ -91,10 +101,15 @@ public class ForkJvm {
 
     /**
      * Gets the JAR file or directory that contains the specified resource.
-     *
-     * @param resource The absolute name of the resource to find, may be <code>null</code>.
-     * @param loader   The class loader to use for searching the resource, may be <code>null</code>.
-     * @return The absolute path to the resource location or <code>null</code> if unknown.
+     * 
+     * @param resource
+     *            The absolute name of the resource to find, may be
+     *            <code>null</code>.
+     * @param loader
+     *            The class loader to use for searching the resource, may be
+     *            <code>null</code>.
+     * @return The absolute path to the resource location or <code>null</code>
+     *         if unknown.
      */
     private static File getResourceSource(String resource, ClassLoader loader) {
         if (resource != null) {
@@ -128,16 +143,17 @@ public class ForkJvm {
         return new File(str);
     }
 
-    public Process run()
-            throws IOException, InterruptedException {
+    public Process run() throws IOException, InterruptedException {
         return run(getClass().getName());
     }
 
-    public Process run(String mainClass)
-            throws IOException, InterruptedException {
+    private Process run(String mainClass) throws IOException, InterruptedException {
         List<String> cmd = new LinkedList<String>();
         cmd.add(getDefaultExecutable());
 
+        if (classPathEntries.size() == 0) {
+            addClassPathEntry(this.getClass());
+        }
         cmd.add("-cp");
         StringBuilder classpath = new StringBuilder();
         for (int i = 0; i < classPathEntries.size(); i++) {
@@ -151,6 +167,13 @@ public class ForkJvm {
         if (port != -1) {
             cmd.add("-Xdebug");
             cmd.add("-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + port);
+        }
+
+        if (this.syncPath != null) {
+            cmd.add("-DForkJvm.syncPath=" + syncPath);
+        }
+        if (this.killAfter != -1) {
+            cmd.add("-DForkJvm.killAfter=" + killAfter);
         }
 
         cmd.add(mainClass);
@@ -167,13 +190,23 @@ public class ForkJvm {
         builder.redirectErrorStream(true);
         Process process = builder.start();
 
-        return process;
+        if (this.syncPath != null) {
+            File file = new File(syncPath);
+            synchronized (syncPath) {
+                while (!file.exists()) {
+                    System.err.println("waiting for sync on " + file.getAbsolutePath());
+                    syncPath.wait(10);
+                }
+                file.delete();
+            }
+        }
 
+        return process;
     }
 
     /**
      * Gets the absolute path to the JVM executable.
-     *
+     * 
      * @return The absolute path to the JVM executable.
      */
     private static String getDefaultExecutable() {
@@ -188,8 +221,7 @@ public class ForkJvm {
         this.parameters = Arrays.asList(parameters);
     }
 
-    public static void flush(Process p)
-            throws IOException {
+    public static void flush(Process p) throws IOException {
         BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
         String line;
         while ((line = r.readLine()) != null) {
@@ -213,8 +245,29 @@ public class ForkJvm {
 
     public void debug(int port) {
         this.port = port;
-
     }
 
+    public void setSyncOn(String path) {
+        this.syncPath = path;
+    }
+
+    public void setKillAfter(int ms) {
+        this.killAfter = ms;
+    }
+
+    public static void setup() throws Exception {
+        String syncPath = System.getProperty("ForkJvm.syncPath");
+        System.out.println("forked: syncing on " + syncPath);
+        if (syncPath != null) {
+            File file = new File(syncPath);
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+
+        String killAfter = System.getProperty("ForkJvm.killAfter");
+        if (killAfter != null) {
+            killAfter(Integer.valueOf(killAfter).intValue());
+        }
+    }
 
 }

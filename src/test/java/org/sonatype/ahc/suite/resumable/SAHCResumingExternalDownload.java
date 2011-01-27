@@ -17,9 +17,7 @@ import com.ning.http.client.Response;
 import com.ning.http.client.SimpleAsyncHttpClient;
 import com.ning.http.client.consumers.FileBodyConsumer;
 import java.io.File;
-import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.concurrent.ExecutionException;
 
 /**
  * @author Benjamin Hanzelmann
@@ -28,12 +26,12 @@ public class SAHCResumingExternalDownload
         extends ForkJvm {
 
     public static void main(String[] args)
-            throws IOException, InterruptedException, ExecutionException {
+        throws Exception
+    {
         String url = args[0];
         String fPath = args[1];
-        final int timeout = Integer.valueOf(args[2]).intValue();
 
-        killAfter(timeout);
+        setup();
         
         SimpleAsyncHttpClient client =
             new SimpleAsyncHttpClient.Builder().setUrl( url ).setRequestTimeoutInMs( 60000 ).setResumableDownload( true ).build();

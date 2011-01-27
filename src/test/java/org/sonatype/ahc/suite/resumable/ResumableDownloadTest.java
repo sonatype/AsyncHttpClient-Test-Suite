@@ -1,7 +1,7 @@
 package org.sonatype.ahc.suite.resumable;
 
 /*
- * Copyright (c) 2010 Sonatype, Inc. All rights reserved.
+ * Copyright (c) 2010-2011 Sonatype, Inc. All rights reserved.
  *
  * This program is licensed to you under the Apache License Version 2.0, 
  * and you may not use this file except in compliance with the Apache License Version 2.0. 
@@ -137,6 +137,9 @@ public class ResumableDownloadTest
 
         ForkJvm fork = new ResumingExternalDownload();
 
+        fork.setKillAfter( 1500 );
+        fork.setSyncOn( "target/testResumeDownloadForkVM.sync" );
+
         fork.addClassPathEntry(ResumingExternalDownload.class);
         fork.addClassPathEntry(ResponseFilter.class);
         fork.addClassPathEntry(LoggerFactory.class);
@@ -147,7 +150,7 @@ public class ResumableDownloadTest
         File tmpFile = File.createTempFile("ExternalDownloadTest", "testResumeDownloadForkVM");
         tmpFile.deleteOnExit();
 
-        fork.setParameters(url("resume", "test"), tmpFile.getAbsolutePath(), "1500");
+        fork.setParameters( url( "resume", "test" ), tmpFile.getAbsolutePath() );
 
         Process process = fork.run();
 
@@ -174,6 +177,9 @@ public class ResumableDownloadTest
         provider().addBehaviour("/resume/*", new Resume( half, length ));
     
         ForkJvm fork = new SAHCResumingExternalDownload();
+
+        fork.setKillAfter( 1500 );
+        fork.setSyncOn( "target/testSimpleAHCResumeDownloadForkVM.sync" );
     
         fork.addClassPathEntry(ResumingExternalDownload.class);
         fork.addClassPathEntry(ResponseFilter.class);
@@ -185,7 +191,7 @@ public class ResumableDownloadTest
         File tmpFile = File.createTempFile("ExternalDownloadTest", "testResumeDownloadForkVM");
         tmpFile.deleteOnExit();
     
-        fork.setParameters(url("resume", "test"), tmpFile.getAbsolutePath(), "1500");
+        fork.setParameters( url( "resume", "test" ), tmpFile.getAbsolutePath() );
     
         Process process = fork.run();
     
