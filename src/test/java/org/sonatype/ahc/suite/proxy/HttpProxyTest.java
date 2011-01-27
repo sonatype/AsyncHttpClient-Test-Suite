@@ -21,11 +21,14 @@ import org.sonatype.ahc.suite.util.AsyncSuiteConfiguration;
 import org.sonatype.tests.http.runner.annotations.Configurators;
 import org.sonatype.tests.http.server.jetty.configurations.HttpProxyConfigurator;
 import org.sonatype.tests.http.server.jetty.impl.JettyServerProvider;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.fail;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
@@ -59,7 +62,13 @@ public class HttpProxyTest
         String url = url("content", "something");
         BoundRequestBuilder get = client().prepareHead(url);
         Response response = execute(get);
-        assertEquals("", response.getResponseBody());
+        try {
+            response.getResponseBody();
+            fail();
+        } catch (IllegalStateException e) {
+            assertNotNull(e.getMessage());
+            Assert.assertEquals(e.getMessage(), "Response's body hasn't been computed by your AsyncHandler.");
+        }
         assertEquals(200, response.getStatusCode());
     }
 

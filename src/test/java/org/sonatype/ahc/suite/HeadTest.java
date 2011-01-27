@@ -16,8 +16,11 @@ package org.sonatype.ahc.suite;
 import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.Response;
 import org.sonatype.ahc.suite.util.AsyncSuiteConfiguration;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.fail;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
@@ -33,6 +36,11 @@ public class HeadTest
         Response response = execute(rb);
         assertEquals(200, response.getStatusCode());
         assertEquals("0", response.getHeader("Content-Length"));
-        assertEquals("", response.getResponseBody());
-    }
+        try {
+            response.getResponseBody();
+            fail();
+        } catch (IllegalStateException e) {
+            assertNotNull(e.getMessage());
+            Assert.assertEquals(e.getMessage(), "Response's body hasn't been computed by your AsyncHandler.");
+        }    }
 }
