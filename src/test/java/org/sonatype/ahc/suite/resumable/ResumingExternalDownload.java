@@ -24,6 +24,8 @@ import com.ning.http.client.resumable.ResumableAsyncHandler;
 import java.io.File;
 import java.io.RandomAccessFile;
 
+import org.slf4j.LoggerFactory;
+
 /**
  * @author Benjamin Hanzelmann
  */
@@ -36,7 +38,6 @@ public class ResumingExternalDownload
         String url = args[0];
         String fPath = args[1];
 
-        setup();
 
         AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
         builder.setConnectionTimeoutInMs(60000).setIdleConnectionInPoolTimeoutInMs(60000).setRequestTimeoutInMs(60000);
@@ -49,6 +50,12 @@ public class ResumingExternalDownload
         ResumableAsyncHandler<Response> handler =
                 new ResumableAsyncHandler<Response>(new PropertiesBasedResumableProcessor());
         handler.setResumableListener(new ResumableRandomAccessFileListener(target));
+
+        // initializing logback takes much time on slow VMs...
+        LoggerFactory.getLogger("initialize");
+
+        setup();
+
         Response response = client.executeRequest(request, handler).get();
         System.err.println(response.toString());
     }

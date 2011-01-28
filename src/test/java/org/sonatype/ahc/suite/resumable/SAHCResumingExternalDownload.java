@@ -13,11 +13,14 @@ package org.sonatype.ahc.suite.resumable;
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
 
+import java.io.File;
+import java.io.RandomAccessFile;
+
+import org.slf4j.LoggerFactory;
+
 import com.ning.http.client.Response;
 import com.ning.http.client.SimpleAsyncHttpClient;
 import com.ning.http.client.consumers.FileBodyConsumer;
-import java.io.File;
-import java.io.RandomAccessFile;
 
 /**
  * @author Benjamin Hanzelmann
@@ -31,13 +34,16 @@ public class SAHCResumingExternalDownload
         String url = args[0];
         String fPath = args[1];
 
-        setup();
-        
         SimpleAsyncHttpClient client =
             new SimpleAsyncHttpClient.Builder().setUrl( url ).setRequestTimeoutInMs( 60000 ).setResumableDownload( true ).build();
 
         RandomAccessFile target = new RandomAccessFile(new File(fPath), "rw");
         FileBodyConsumer consumer = new FileBodyConsumer( target );
+
+        // initializing logback takes much time on slow VMs...
+        LoggerFactory.getLogger("initialize");
+
+        setup();
 
         Response response = client.get( consumer ).get();
         System.err.println(response.toString());

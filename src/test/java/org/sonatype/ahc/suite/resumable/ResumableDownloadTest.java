@@ -137,7 +137,7 @@ public class ResumableDownloadTest
 
         ForkJvm fork = new ResumingExternalDownload();
 
-        fork.setKillAfter( 1500 );
+        fork.setKillAfter(3500);
         fork.setSyncOn( "target/testResumeDownloadForkVM.sync" );
 
         fork.addClassPathEntry(ResumingExternalDownload.class);
@@ -178,7 +178,7 @@ public class ResumableDownloadTest
     
         ForkJvm fork = new SAHCResumingExternalDownload();
 
-        fork.setKillAfter( 1500 );
+        fork.setKillAfter(3500);
         fork.setSyncOn( "target/testSimpleAHCResumeDownloadForkVM.sync" );
     
         fork.addClassPathEntry(ResumingExternalDownload.class);
