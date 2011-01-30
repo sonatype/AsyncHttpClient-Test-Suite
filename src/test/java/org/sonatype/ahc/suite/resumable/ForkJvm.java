@@ -13,10 +13,10 @@ package org.sonatype.ahc.suite.resumable;
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -190,6 +190,8 @@ public class ForkJvm {
         builder.redirectErrorStream(true);
         Process process = builder.start();
 
+        new Flusher(process).start();
+
         if (this.syncPath != null) {
             File file = new File(syncPath);
             synchronized (syncPath) {
@@ -219,15 +221,6 @@ public class ForkJvm {
 
     public void setParameters(String... parameters) {
         this.parameters = Arrays.asList(parameters);
-    }
-
-    public static void flush(Process p) throws IOException {
-        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-        String line;
-        while ((line = r.readLine()) != null) {
-            System.err.println(line);
-        }
-        r.close();
     }
 
     public static void killAfter(final int killAfter) {
@@ -268,6 +261,57 @@ public class ForkJvm {
         if (killAfter != null) {
             killAfter(Integer.valueOf(killAfter).intValue());
         }
+    }
+
+    public class Flusher extends Thread {
+    
+        private InputStream in;
+        private InputStream error;
+        private Process process;
+        private PrintStream out = System.err;
+    
+        public Flusher(Process process) {
+            this.process = process;
+            in = process.getInputStream();
+            error = process.getErrorStream();
+        }
+    
+        @Override
+        public synchronized void start() {
+            while (true) {
+                try {
+                    process.exitValue();
+                    return;
+                } catch (IllegalThreadStateException e) {
+                    // process not exited yet
+                }
+    
+                try {
+                    int available = 0;
+                    while ((available = in.available()) > 0) {
+                        byte[] buffer = new byte[in.available()];
+                        in.read(buffer);
+                        out.write(buffer);
+                    }
+                    while ((available = error.available()) > 0) {
+                        byte[] buffer = new byte[error.available()];
+                        error.read(buffer);
+                        out.write(buffer);
+                    }
+                } catch (IOException e) {
+                    out.print("Error reading from process streams");
+                    e.printStackTrace(out);
+                } finally {
+                    out.flush();
+                }
+    
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+            }
+        }
+    
     }
 
 }

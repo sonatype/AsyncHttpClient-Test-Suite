@@ -154,7 +154,6 @@ public class ResumableDownloadTest
 
         Process process = fork.run();
 
-        ForkJvm.flush(process);
         process.waitFor();
 
         assertEquals(half, tmpFile.length());
@@ -163,7 +162,6 @@ public class ResumableDownloadTest
 
         process = fork.run();
 
-        ForkJvm.flush(process);
         process.waitFor();
         assertEquals(length, tmpFile.length());
     }
@@ -195,7 +193,6 @@ public class ResumableDownloadTest
     
         Process process = fork.run();
     
-        ForkJvm.flush(process);
         process.waitFor();
     
         assertEquals(half, tmpFile.length());
@@ -204,7 +201,6 @@ public class ResumableDownloadTest
     
         process = fork.run();
     
-        ForkJvm.flush(process);
         process.waitFor();
         assertEquals(length, tmpFile.length());
     }
