@@ -14,10 +14,10 @@ package com.ning.http.client.async.apache;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.async.ByteBufferCapacityTest;
+import com.ning.http.client.async.ListenableFutureTest;
 import com.ning.http.client.async.ProviderUtil;
 
-public class ApacheByteBufferCapacityTest extends ByteBufferCapacityTest {
+public class ApacheListenableFutureTest extends ListenableFutureTest {
 
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {

@@ -25,7 +25,7 @@ public class JDKAuthTimeoutTest extends AuthTimeoutTest {
 
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
-        return ProviderUtil.nettyProvider(config);
+        return ProviderUtil.jdkProvider(config);
     }
 
     @Test(enabled = false)

@@ -17,25 +17,15 @@ package com.ning.http.client.async.apache;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.Response;
 import com.ning.http.client.async.AuthTimeoutTest;
 import com.ning.http.client.async.ProviderUtil;
-import org.eclipse.jetty.http.security.Constraint;
 import org.testng.annotations.Test;
-
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.fail;
 
 public class ApacheAuthTimeoutTest extends AuthTimeoutTest {
 
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
-        return ProviderUtil.nettyProvider(config);
+        return ProviderUtil.apacheProvider(config);
     }
 
     @Test(enabled = false)

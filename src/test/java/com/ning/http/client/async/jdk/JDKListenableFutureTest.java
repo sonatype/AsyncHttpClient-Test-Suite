@@ -10,17 +10,16 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package com.ning.http.client.async.apache;
+package com.ning.http.client.async.jdk;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.async.ByteBufferCapacityTest;
+import com.ning.http.client.async.ListenableFutureTest;
 import com.ning.http.client.async.ProviderUtil;
 
-public class ApacheByteBufferCapacityTest extends ByteBufferCapacityTest {
-
+public class JDKListenableFutureTest extends ListenableFutureTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
-        return ProviderUtil.apacheProvider(config);
+        return ProviderUtil.jdkProvider(config);
     }
 }
