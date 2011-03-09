@@ -21,14 +21,11 @@ import org.sonatype.ahc.suite.util.AsyncSuiteConfiguration;
 import org.sonatype.tests.http.runner.annotations.Configurators;
 import org.sonatype.tests.http.server.jetty.configurations.HttpProxyConfigurator;
 import org.sonatype.tests.http.server.jetty.impl.JettyServerProvider;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.fail;
 import static org.testng.AssertJUnit.assertEquals;
 
 /**
