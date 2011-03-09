@@ -62,13 +62,8 @@ public class HttpProxyTest
         String url = url("content", "something");
         BoundRequestBuilder get = client().prepareHead(url);
         Response response = execute(get);
-        try {
-            response.getResponseBody();
-            fail();
-        } catch (IllegalStateException e) {
-            assertNotNull(e.getMessage());
-            Assert.assertEquals(e.getMessage(), "Response's body hasn't been computed by your AsyncHandler.");
-        }
+        assertEquals("", response.getResponseBody());
+
         assertEquals(200, response.getStatusCode());
     }
 

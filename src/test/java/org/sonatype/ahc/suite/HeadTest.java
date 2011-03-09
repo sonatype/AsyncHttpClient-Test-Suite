@@ -36,11 +36,6 @@ public class HeadTest
         Response response = execute(rb);
         assertEquals(200, response.getStatusCode());
         assertEquals("0", response.getHeader("Content-Length"));
-        try {
-            response.getResponseBody();
-            fail();
-        } catch (IllegalStateException e) {
-            assertNotNull(e.getMessage());
-            Assert.assertEquals(e.getMessage(), "Response's body hasn't been computed by your AsyncHandler.");
-        }    }
+        assertEquals("", response.getResponseBody());
+    }
 }
