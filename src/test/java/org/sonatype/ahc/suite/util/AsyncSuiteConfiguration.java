@@ -89,6 +89,7 @@ public class AsyncSuiteConfiguration
             RealmBuilder realmbuilder = new Realm.RealmBuilder();
             realmbuilder.setPrincipal(principal);
             realmbuilder.setPassword(password);
+            realmbuilder.setScheme(Realm.AuthScheme.BASIC);
             realmbuilder.setUsePreemptiveAuth(usePreemptiveAuth);
             realm = realmbuilder.build();
         }
