@@ -18,9 +18,9 @@ package com.ning.http.client.async.jdk;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.ProviderUtil;
-import com.ning.http.client.async.RC10KTest;
+import com.ning.http.client.async.Relative302Test;
 
-public class JDKRelative302Test extends RC10KTest {
+public class JDKRelative302Test extends Relative302Test {
 
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {

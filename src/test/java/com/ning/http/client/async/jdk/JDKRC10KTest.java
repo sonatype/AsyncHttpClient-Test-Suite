@@ -19,10 +19,20 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.ProviderUtil;
 import com.ning.http.client.async.RC10KTest;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class JDKRC10KTest extends RC10KTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.jdkProvider(config);
     }
+
+    @Test(timeOut = 10 * 60 * 1000, groups = "scalability", enabled = false)
+    public void rc10kProblem() throws IOException, ExecutionException, TimeoutException, InterruptedException {
+    }
 }
+

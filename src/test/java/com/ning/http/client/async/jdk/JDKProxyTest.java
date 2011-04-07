@@ -19,10 +19,19 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.ProviderUtil;
 import com.ning.http.client.async.ProxyTest;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class JDKProxyTest extends ProxyTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.jdkProvider(config);
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void testNonProxyHosts() throws IOException, ExecutionException, TimeoutException, InterruptedException {
     }
 }

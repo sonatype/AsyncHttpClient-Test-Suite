@@ -19,10 +19,23 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.PerRequestRelative302Test;
 import com.ning.http.client.async.ProviderUtil;
+import org.testng.annotations.Test;
 
 public class JDKPerRequestRelative302Test extends PerRequestRelative302Test {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.jdkProvider(config);
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void redirected302Test() throws Throwable {
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void redirected302InvalidTest() throws Throwable {
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void relativeLocationUrl() throws Throwable {
     }
 }

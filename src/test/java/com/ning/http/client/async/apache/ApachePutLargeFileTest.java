@@ -19,10 +19,15 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.ProviderUtil;
 import com.ning.http.client.async.PutLargeFileTest;
+import org.testng.annotations.Test;
 
 public class ApachePutLargeFileTest extends PutLargeFileTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.apacheProvider(config);
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void testPutLargeFile() {
     }
 }

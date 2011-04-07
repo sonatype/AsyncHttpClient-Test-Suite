@@ -19,10 +19,23 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.ProviderUtil;
 import com.ning.http.client.async.RemoteSiteTest;
+import org.testng.annotations.Test;
 
 public class JDKRemoteSiteTest extends RemoteSiteTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.jdkProvider(config);
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void stripQueryStringTest() throws Throwable {
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void stripQueryStringNegativeTest() throws Throwable {
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void invalidStreamTest2() throws Throwable {
     }
 }

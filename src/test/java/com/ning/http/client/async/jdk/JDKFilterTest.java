@@ -19,10 +19,35 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.FilterTest;
 import com.ning.http.client.async.ProviderUtil;
+import org.testng.annotations.Test;
 
 public class JDKFilterTest extends FilterTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.jdkProvider(config);
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void basicTest() throws Throwable {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void loadThrottleTest() throws Throwable {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void maxConnectionsText() throws Throwable {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void basicResponseFilterTest() throws Throwable {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void replayResponseFilterTest() throws Throwable {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void replayStatusCodeResponseFilterTest() throws Throwable {
     }
 }

@@ -19,10 +19,29 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.ProviderUtil;
 import com.ning.http.client.async.ProxyyTunnellingTest;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 public class ApacheProxyTunnellingTest extends ProxyyTunnellingTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.apacheProvider(config);
     }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void testRequestProxy() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void testConfigProxy() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    }
+
+    @Test(groups = {"online", "default_provider"}, enabled = false)
+    public void testSimpleAHCConfigProxy() throws IOException, InterruptedException, ExecutionException, TimeoutException {
+    }
+
+
 }

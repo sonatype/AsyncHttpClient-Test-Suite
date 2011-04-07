@@ -16,11 +16,16 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.ByteBufferCapacityTest;
 import com.ning.http.client.async.ProviderUtil;
+import org.testng.annotations.Test;
 
 public class ApacheByteBufferCapacityTest extends ByteBufferCapacityTest {
 
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.apacheProvider(config);
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void basicByteBufferTest() throws Throwable {
     }
 }

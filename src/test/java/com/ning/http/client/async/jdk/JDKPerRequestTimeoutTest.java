@@ -16,10 +16,29 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.async.PerRequestTimeoutTest;
 import com.ning.http.client.async.ProviderUtil;
+import org.testng.annotations.Test;
+
+import java.io.IOException;
 
 public class JDKPerRequestTimeoutTest extends PerRequestTimeoutTest {
     @Override
     public AsyncHttpClient getAsyncHttpClient(AsyncHttpClientConfig config) {
         return ProviderUtil.jdkProvider(config);
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void testRequestTimeout() throws IOException {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void testGlobalDefaultPerRequestInfiniteTimeout() throws IOException {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void testGlobalRequestTimeout() throws IOException {
+    }
+
+    @Test(groups = {"standalone", "default_provider"})
+    public void testGlobalIdleTimeout() throws IOException {
     }
 }
