@@ -17,13 +17,19 @@ package com.ning.http.client.async.jdk;
 
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
+import com.ning.http.client.Response;
 import com.ning.http.client.async.ProviderUtil;
 import com.ning.http.client.async.ProxyTest;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import static org.testng.Assert.fail;
 
 public class JDKProxyTest extends ProxyTest {
     @Override
@@ -33,5 +39,9 @@ public class JDKProxyTest extends ProxyTest {
 
     @Test(groups = {"standalone", "default_provider"}, enabled = false)
     public void testNonProxyHosts() throws IOException, ExecutionException, TimeoutException, InterruptedException {
+    }
+
+    @Test(groups = {"standalone", "default_provider"}, enabled = false)
+    public void testIgnoreProxyPropertiesByDefault() throws IOException, ExecutionException, TimeoutException, InterruptedException {
     }
 }
