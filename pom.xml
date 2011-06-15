@@ -16,9 +16,9 @@
     </description>
     <url>http://github.com/AsyncHttpClient/async-http-client</url>
     <scm>
-        <connection>scm:git:git@github.com:AsynHttpClient/async-http-client.git</connection>
-        <url>scm:git:git@github.com:AsyncHttpClient/async-http-client.git</url>
-        <developerConnection>scm:git:git@github.com:AsyncHttpClient/async-http-client.git</developerConnection>
+        <connection>scm:git:git@github.com:sonatype/AsyncHttpClient-Test-Suite.git</connection>
+        <url>scm:git:git@github.com:sonatype/AsyncHttpClient-Test-Suite.git</url>
+        <developerConnection>scm:git:git@github.com:sonatype/AsyncHttpClient-Test-Suite.git</developerConnection>
     </scm>
     <prerequisites>
         <maven>2.0.9</maven>
