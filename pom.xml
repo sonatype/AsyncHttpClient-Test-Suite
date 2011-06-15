@@ -9,7 +9,7 @@
     <groupId>com.ning</groupId>
     <artifactId>async-http-client-test-suite</artifactId>
     <name>async-http-client-test-suite</name>
-    <version>1.6.4</version>
+    <version>1.6.4-SNAPSHOT</version>
     <packaging>jar</packaging>
     <description>
         Async Http Client Test Suite
